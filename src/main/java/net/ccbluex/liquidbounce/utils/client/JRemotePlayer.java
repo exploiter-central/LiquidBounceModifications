@@ -17,21 +17,25 @@
  * along with LiquidBounce. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.ccbluex.liquidbounce.injection.mixins.truffle;
+package net.ccbluex.liquidbounce.utils.client;
 
-import net.ccbluex.liquidbounce.utils.mappings.EnvironmentRemapper;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.RemotePlayer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
-@Pseudo
-@Mixin(targets = "com/oracle/truffle/host/HostClassLoader", remap = false)
-public abstract class MixinHostClassLoader {
-
-    @ModifyVariable(method = "findClass", at = @At("HEAD"), argsOnly = true, remap = false)
-    private String remapClassName(String value) {
-        return EnvironmentRemapper.INSTANCE.remapClassName(value);
+/**
+ * TODO: remove this after KT 2.3.10
+ */
+@NullMarked
+public class JRemotePlayer extends RemotePlayer {
+    public JRemotePlayer(ClientLevel level, GameProfile gameProfile) {
+        super(level, gameProfile);
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
+    }
 }

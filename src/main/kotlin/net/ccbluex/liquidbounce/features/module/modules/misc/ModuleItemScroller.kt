@@ -19,19 +19,19 @@
 
 package net.ccbluex.liquidbounce.features.module.modules.misc
 
+import net.ccbluex.liquidbounce.config.types.NamedChoice
+import net.ccbluex.liquidbounce.features.module.Category
+import net.ccbluex.liquidbounce.features.module.ClientModule
+import net.ccbluex.liquidbounce.utils.client.Chronometer
 import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.Window
-import net.ccbluex.liquidbounce.config.types.NamedChoice
-import net.ccbluex.liquidbounce.features.module.ClientModule
-import net.ccbluex.liquidbounce.features.module.ModuleCategories
-import net.ccbluex.liquidbounce.utils.client.Chronometer
 import net.minecraft.world.inventory.AbstractContainerMenu
-import net.minecraft.world.inventory.ClickType
 import net.minecraft.world.inventory.Slot
+import net.minecraft.world.inventory.ContainerInput
 import org.lwjgl.glfw.GLFW
 
 fun interface MouseClick {
-    operator fun invoke(callbackSlot: Slot?, slotId: Int, mouseButton: Int, actionType: ClickType)
+    operator fun invoke(callbackSlot: Slot?, slotId: Int, mouseButton: Int, actionType: ContainerInput)
 }
 
 fun interface ClickAction {
@@ -43,7 +43,7 @@ fun interface ClickAction {
  *
  * @author sqlerrorthing
  */
-object ModuleItemScroller : ClientModule("ItemScroller", ModuleCategories.MISC) {
+object ModuleItemScroller : ClientModule("ItemScroller", Category.MISC) {
     @JvmStatic
     val clickMode by enumChoice("ClickMode", ClickMode.QUICK_MOVE)
 
@@ -70,6 +70,6 @@ enum class ClickMode(
     val action: ClickAction
 ) : NamedChoice {
     QUICK_MOVE("QuickMove", { _, slot, callback ->
-        callback(slot, slot.index, GLFW.GLFW_MOUSE_BUTTON_LEFT, ClickType.QUICK_MOVE)
+        callback(slot, slot.index, GLFW.GLFW_MOUSE_BUTTON_LEFT, ContainerInput.QUICK_MOVE)
     })
 }
