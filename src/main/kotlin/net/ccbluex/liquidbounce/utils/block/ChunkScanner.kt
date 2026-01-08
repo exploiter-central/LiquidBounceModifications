@@ -89,7 +89,7 @@ object ChunkScanner : EventListener, MinecraftShortcuts {
     private val chunkLoadHandler = handler<ChunkLoadEvent>(READ_FINAL_STATE) { event ->
         val chunk = world.getChunk(event.x, event.z).takeUnless { it.isEmpty } ?: return@handler
 
-        loadedChunks.add(ChunkPos.asLong(event.x, event.z))
+        loadedChunks.add(ChunkPos.pack(event.x, event.z))
 
         if (subscribers.isEmpty()) return@handler
 
@@ -109,7 +109,7 @@ object ChunkScanner : EventListener, MinecraftShortcuts {
                 UpdateRequest.ChunkSectionUpdate(packet).runAsync()
 
             is ClientboundForgetLevelChunkPacket -> mc.execute {
-                loadedChunks.remove(packet.pos.toLong())
+                loadedChunks.remove(packet.pos.pack())
                 UpdateRequest.ChunkUnload(packet.pos).runAsync()
             }
         }
@@ -154,7 +154,7 @@ object ChunkScanner : EventListener, MinecraftShortcuts {
     }
 
     /**
-     * @see WorldChunk.getBlockState
+     * @see LevelChunk.getBlockState
      */
     private suspend fun scanChunkSections(
         chunk: LevelChunk,
@@ -289,7 +289,7 @@ object ChunkScanner : EventListener, MinecraftShortcuts {
          * Registers a block update and asks the subscriber to make a decision about what should be done.
          * This method must be **thread-safe**.
          *
-         * @param pos Might be [BlockPos.Mutable]. Use copy if it needs to be saved.
+         * @param pos Might be [BlockPos.MutableBlockPos]. Use copy if it needs to be saved.
          * @param state The new [BlockState] of [pos].
          * @param cleared If the block is in section already cleared. Or, does it not need to check existing records
          */
