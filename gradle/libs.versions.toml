@@ -13,7 +13,7 @@ fabric-loaderMin = "0.16.14"
 fabric-api = "0.141.2+26.1"
 
 # mcef
-mcef = "3.1.6-26.1-alpha.1" # TODO: mavenLocal
+mcef = "dev~26.1-SNAPSHOT"
 # mc-authlib
 mc_authlib = "1.6.0"
 # Polyglot
