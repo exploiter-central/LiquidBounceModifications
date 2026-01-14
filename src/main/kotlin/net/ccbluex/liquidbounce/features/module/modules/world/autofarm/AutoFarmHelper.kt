@@ -22,6 +22,7 @@ package net.ccbluex.liquidbounce.features.module.modules.world.autofarm
 import net.ccbluex.liquidbounce.utils.block.getBlock
 import net.ccbluex.liquidbounce.utils.client.world
 import net.minecraft.core.BlockPos
+import net.minecraft.tags.BlockTags
 import net.minecraft.world.level.block.BambooStalkBlock
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
@@ -93,3 +94,9 @@ fun BlockPos.readyForHarvest(state: BlockState): Boolean {
         else -> false
     }
 }
+
+inline val BlockState.supportsCrops: Boolean get() = `is`(BlockTags.SUPPORTS_CROPS)
+
+inline val BlockState.supportsCocoa: Boolean get() = `is`(BlockTags.SUPPORTS_COCOA)
+
+inline val BlockState.supportsNetherWart: Boolean get() = `is`(BlockTags.SUPPORTS_NETHER_WART)
