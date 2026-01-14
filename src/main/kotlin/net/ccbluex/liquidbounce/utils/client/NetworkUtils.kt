@@ -25,6 +25,8 @@ import net.ccbluex.liquidbounce.features.module.modules.combat.crystalaura.Switc
 import net.ccbluex.liquidbounce.features.module.modules.misc.ModulePacketLogger
 import net.ccbluex.liquidbounce.utils.aiming.RotationManager
 import net.ccbluex.liquidbounce.utils.block.SwingMode
+import net.ccbluex.liquidbounce.utils.entity.box
+import net.ccbluex.liquidbounce.utils.entity.getNearestPoint
 import net.ccbluex.liquidbounce.utils.input.shouldSwingHand
 import net.ccbluex.liquidbounce.utils.inventory.OffHandSlot
 import net.ccbluex.liquidbounce.utils.network.PlayerSneakPacket
@@ -40,13 +42,13 @@ import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
 import net.minecraft.network.protocol.game.ServerboundUseItemPacket
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.GameType
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.EntityHitResult
 import org.apache.commons.lang3.mutable.MutableObject
-import java.util.Objects
 
 internal fun sendStartSneaking() {
     if (!usesViaFabricPlus || isNewerThanOrEquals1_21_6) return
@@ -131,6 +133,21 @@ fun clickBlockWithSlot(
 }
 
 /**
+ * Since 26.1-snapshot-3 INTERACT type of
+ * [net.minecraft.network.protocol.game.ServerboundInteractPacket] has been removed.
+ */
+fun MultiPlayerGameMode.interact(
+    player: Player,
+    entity: Entity,
+    hand: InteractionHand,
+) = interact(
+    player,
+    entity,
+    EntityHitResult(entity, entity.box.getNearestPoint(player.eyePosition)),
+    hand,
+)
+
+/**
  * [MultiPlayerGameMode.interactItem] but with custom rotations.
  */
 fun MultiPlayerGameMode.interactItem(
@@ -155,9 +172,7 @@ fun MultiPlayerGameMode.interactItem(
 
         val typedActionResult = itemStack.use(world, player, hand)
         val itemStack2 = if (typedActionResult is InteractionResult.Success) {
-            Objects.requireNonNullElseGet<ItemStack>(
-                typedActionResult.heldItemTransformedTo()
-            ) { player.getItemInHand(hand) } as ItemStack
+            typedActionResult.heldItemTransformedTo() ?: player.getItemInHand(hand)
         } else {
             player.getItemInHand(hand)
         }

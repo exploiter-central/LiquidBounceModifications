@@ -128,7 +128,7 @@ object ModuleClickGui :
     }
 
     private fun open() {
-        if (clickGuiBrowser != null) {
+        if (clickGuiBrowser != null || !IntegrationListener.isBrowserReady) {
             return
         }
 

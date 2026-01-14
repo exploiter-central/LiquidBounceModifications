@@ -29,7 +29,7 @@ import net.minecraft.core.Direction
 import net.minecraft.tags.BlockTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.block.FarmBlock
+import net.minecraft.world.level.block.FarmlandBlock
 import net.minecraft.world.level.block.SoulSandBlock
 import net.minecraft.world.level.block.state.BlockState
 
@@ -38,11 +38,11 @@ sealed interface AutoFarmTrackedState {
         override val choiceName: String,
         val items: Collection<Item>,
     ) : AutoFarmTrackedState, NamedChoice {
-        FARM(
+        FARMLAND(
             "Farmland",
             objectArraySetOf(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.CARROT, Items.POTATO),
         ) {
-            override fun isBlockMatches(state: BlockState): Boolean = state.block is FarmBlock
+            override fun isBlockMatches(state: BlockState): Boolean = state.block is FarmlandBlock
         },
         SOUL_SAND(
             "SoulSand",

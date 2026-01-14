@@ -23,7 +23,7 @@ import net.ccbluex.liquidbounce.utils.block.getState
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.tags.BlockTags
-import net.minecraft.world.level.block.FarmBlock
+import net.minecraft.world.level.block.FarmlandBlock
 import net.minecraft.world.level.block.SoulSandBlock
 import net.minecraft.world.level.block.state.BlockState
 
@@ -42,13 +42,13 @@ object AutoFarmBlockTracker : AbstractBlockLocationTracker.State2BlockPos<AutoFa
                 if (state.isAir) {
                     // If this position is air, check placeable position below
                     when (blockBelow) {
-                        is FarmBlock -> track(cache, AutoFarmTrackedState.Plantable.FARM)
+                        is FarmlandBlock -> track(cache, AutoFarmTrackedState.Plantable.FARMLAND)
                         is SoulSandBlock -> track(cache, AutoFarmTrackedState.Plantable.SOUL_SAND)
                     }
 
                     // Air itself should be untracked
                     return null
-                } else if (blockBelow is SoulSandBlock || blockBelow is FarmBlock) {
+                } else if (blockBelow is SoulSandBlock || blockBelow is FarmlandBlock) {
                     // Not air, and block below is either farm or soul sand, untrack it
                     untrack(cache)
                 }
@@ -56,7 +56,7 @@ object AutoFarmBlockTracker : AbstractBlockLocationTracker.State2BlockPos<AutoFa
                 // Check if air above
                 if (cache.setWithOffset(pos, Direction.UP).getState()?.isAir == true) {
                     when (state.block) {
-                        is FarmBlock -> AutoFarmTrackedState.Plantable.FARM
+                        is FarmlandBlock -> AutoFarmTrackedState.Plantable.FARMLAND
                         is SoulSandBlock -> AutoFarmTrackedState.Plantable.SOUL_SAND
                         else -> null
                     }

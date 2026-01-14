@@ -42,7 +42,7 @@ import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Items
-import java.util.Locale
+import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 private val ACCEPTED_ITEM_TAGS =
@@ -192,7 +192,7 @@ fun getRegistry(requestObject: RequestObject) = httpOk(JsonObject().apply {
             BuiltInRegistries.ITEM.forEach { item ->
                 val id = BuiltInRegistries.ITEM.getKey(item)
                 add(id.toString(), JsonObject().apply {
-                    addProperty("name", item.name.string)
+                    addProperty("name", item.defaultInstance.itemName.string)
                     addProperty("icon", iconUrl(id))
                 })
             }

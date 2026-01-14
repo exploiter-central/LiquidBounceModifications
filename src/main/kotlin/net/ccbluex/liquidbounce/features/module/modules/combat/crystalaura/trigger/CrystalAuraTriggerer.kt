@@ -54,7 +54,9 @@ object CrystalAuraTriggerer : Configurable("Triggers"), EventListener, Minecraft
      */
     val offThread by boolean("Off-Thread", true)
 
-    private val service = Executors.newSingleThreadExecutor()
+    private val service = Executors.newSingleThreadExecutor {
+        Thread(it, "CrystalAuraTriggerer").apply { isDaemon = true }
+    }
 
     /**
      * The currently executed placement task.
@@ -66,7 +68,7 @@ object CrystalAuraTriggerer : Configurable("Triggers"), EventListener, Minecraft
      */
     private var currentDestroyTask: Future<*>? = null
 
-    private var canCache: BooleanSupplier
+    private val canCache: BooleanSupplier
 
     init {
         // register all triggers

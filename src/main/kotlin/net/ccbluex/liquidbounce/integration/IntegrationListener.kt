@@ -105,7 +105,8 @@ object IntegrationListener : EventListener {
     internal val parent: Screen
         get() = mc.screen ?: TitleScreen()
 
-    private var browserIsReady = false
+    var isBrowserReady = false
+        private set
 
     @Suppress("unused")
     val handleBrowserReady = handler<BrowserReadyEvent>(priority = FIRST_PRIORITY) {
@@ -114,7 +115,7 @@ object IntegrationListener : EventListener {
         // Fires up the client tab
         browserSettings = IntegrationBrowserSettings(0, ::restart)
         browser = ThemeManager.openInputAwareImmediate(settings = browserSettings)
-        browserIsReady = true
+        isBrowserReady = true
     }
 
     @Suppress("unused")
@@ -158,7 +159,7 @@ object IntegrationListener : EventListener {
     }
 
     fun restart() {
-        if (!browserIsReady || !BrowserBackendManager.browserBackend.isInitialized) {
+        if (!isBrowserReady || !BrowserBackendManager.browserBackend.isInitialized) {
             return
         }
 
@@ -183,7 +184,7 @@ object IntegrationListener : EventListener {
     }
 
     fun update() {
-        if (!browserIsReady || !BrowserBackendManager.browserBackend.isInitialized) {
+        if (!isBrowserReady || !BrowserBackendManager.browserBackend.isInitialized) {
             return
         }
 
@@ -215,7 +216,7 @@ object IntegrationListener : EventListener {
 
     @Suppress("unused")
     private val screenRefresher = handler<GameTickEvent> {
-        if (browserIsReady && mc.screen !is TaskProgressScreen) {
+        if (isBrowserReady && mc.screen !is TaskProgressScreen) {
             handleCurrentScreen(mc.screen)
         }
     }
@@ -239,7 +240,7 @@ object IntegrationListener : EventListener {
 
     @Suppress("unused")
     private val fpsLimitHandler = handler<FpsLimitEvent> { event ->
-        if (!browserIsReady || !browserSettings.syncGameFps || !isClientScreen(mc.screen)) {
+        if (!isBrowserReady || !browserSettings.syncGameFps || !isClientScreen(mc.screen)) {
             return@handler
         }
 
@@ -275,7 +276,7 @@ object IntegrationListener : EventListener {
 
                 false
             }
-            !browserIsReady || screen is VirtualDisplayScreen -> false
+            !isBrowserReady || screen is VirtualDisplayScreen -> false
             else -> {
                 // Are we currently playing the game?
                 if (mc.level != null && screen == null) {

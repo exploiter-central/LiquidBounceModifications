@@ -41,8 +41,8 @@ import net.ccbluex.liquidbounce.utils.aiming.utils.facingEnemy
 import net.ccbluex.liquidbounce.utils.aiming.utils.raycast
 import net.ccbluex.liquidbounce.utils.aiming.utils.raytraceEntity
 import net.ccbluex.liquidbounce.utils.client.PacketQueueManager
+import net.ccbluex.liquidbounce.utils.client.interact
 import net.ccbluex.liquidbounce.utils.client.isOlderThanOrEqual1_8
-import net.ccbluex.liquidbounce.utils.client.isOlderThanOrEquals1_7_10
 import net.ccbluex.liquidbounce.utils.combat.shouldBeAttacked
 import net.ccbluex.liquidbounce.utils.entity.isBlockAction
 import net.ccbluex.liquidbounce.utils.entity.rotation
@@ -307,13 +307,8 @@ object KillAuraAutoBlock : ToggleableConfigurable(ModuleKillAura, "AutoBlocking"
         val entity = entityHitResult?.entity
 
         if (entity != null) {
-            // 1.7 players do not send INTERACT_AT
-            if (!isOlderThanOrEquals1_7_10) {
-                interaction.interactAt(player, entity, entityHitResult, InteractionHand.MAIN_HAND)
-            }
-
-            // INTERACT
-            interaction.interact(player, entity, InteractionHand.MAIN_HAND)
+            // INTERACT_AT (26.1 removes INTERACT)
+            interaction.interact(player, entity, entityHitResult, InteractionHand.MAIN_HAND)
             return
         }
 

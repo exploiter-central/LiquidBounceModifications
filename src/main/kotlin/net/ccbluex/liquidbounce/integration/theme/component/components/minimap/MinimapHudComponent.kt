@@ -120,8 +120,8 @@ object MinimapHudComponent : NativeHudComponent("Minimap", false, Alignment(
         },
     )
 
-    private val COMPASS = Items.COMPASS.defaultInstance
-    private val CLOCK = Items.CLOCK.defaultInstance
+    private val COMPASS by lazy(LazyThreadSafetyMode.NONE) { Items.COMPASS.defaultInstance }
+    private val CLOCK by lazy(LazyThreadSafetyMode.NONE) { Items.CLOCK.defaultInstance }
 
     init {
         tree(TextureConfigurable)

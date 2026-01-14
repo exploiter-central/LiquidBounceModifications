@@ -104,7 +104,7 @@ enum class VirtualScreenType(
         "options",
         recognizer = { it is OptionsScreen },
         open = {
-            mc.setScreen(OptionsScreen(IntegrationListener.parent, mc.options))
+            mc.setScreen(OptionsScreen(IntegrationListener.parent, mc.options, mc.level != null))
         }
     ),
 
