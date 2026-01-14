@@ -19,6 +19,9 @@
 
 package net.ccbluex.liquidbounce.utils.text;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
@@ -33,9 +36,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 /**
  * A plain and immutable {@link Component}, {@link FormattedCharSequence} and {@link CharSequence}.
@@ -61,6 +61,10 @@ public record PlainText(
         return content.text().isEmpty() && style.isEmpty()
                 ? EMPTY
                 : new PlainText(content, style);
+    }
+
+    public static PlainText of(String content) {
+        return of(content, Style.EMPTY);
     }
 
     public static PlainText of(String content, Style style) {
