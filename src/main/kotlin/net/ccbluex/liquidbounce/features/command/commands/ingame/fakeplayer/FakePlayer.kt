@@ -24,11 +24,11 @@ import net.ccbluex.liquidbounce.event.events.PacketEvent
 import net.ccbluex.liquidbounce.event.events.TransferOrigin
 import net.ccbluex.liquidbounce.features.module.MinecraftShortcuts
 import net.ccbluex.liquidbounce.utils.client.JRemotePlayer
-import net.minecraft.client.player.RemotePlayer
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.player.RemotePlayer
+import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.effect.MobEffects
-import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
 
 /**
  * This class represents a Fake Player implementing
